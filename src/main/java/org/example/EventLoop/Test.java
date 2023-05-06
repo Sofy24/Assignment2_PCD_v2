@@ -1,35 +1,52 @@
 package org.example.EventLoop;
 
 
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
 import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.file.FileSystem;
+import org.example.Utilities.FilePath;
+import org.example.Utilities.FileSearcher;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Set;
 
 public class Test {
     public static void main(String[] args) {
 
         Vertx vertx = Vertx.vertx();
+        System.out.println("START");
+        String directory = "C:\\Users\\seraf\\OneDrive\\Desktop\\SSS\\ASSIGNMENT1\\f1";
 
-        FileSystem fs = vertx.fileSystem();
-
-        log("started ");
-
-        /* version 4.X - future (promise) based API */
-
-        Future<Buffer> fut = fs.readFile("build.gradle");
-        fut.onComplete((AsyncResult<Buffer> res) -> {
-            log("BUILD \n" + res.result().toString().substring(0,160));
+        vertx.eventBus().consumer("file", message -> {
+            // Handle the received event
+            String file = ((String) message.body());
+            long len = 0L;
+            try {
+                len = Files.lines(Paths.get(file), StandardCharsets.UTF_8).count();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(file + ": "+len);
         });
 
-        try {
-            Thread.sleep(10000);
-        } catch (Exception ex) {}
-        log("done");
-    }
+        vertx.eventBus().consumer("dir", message -> {
+            // Handle the received event
+            String dir = (String)message.body();
+            System.out.println("DIR: "+ dir);
 
-    private static void log(String msg) {
-        System.out.println("" + Thread.currentThread() + " " + msg);
+            Set<File> dirs = FileSearcher.getSubDirectory(dir);
+            if (dirs != null) {
+                dirs.forEach(d -> vertx.eventBus().publish("dir", d.getAbsolutePath()));
+            }
+
+            Set<String> files = FileSearcher.getJavaSourceFiles(dir);
+            if (files != null) {
+                files.forEach(file -> vertx.eventBus().publish("file", new FilePath(dir, file).getCompleteFilePath()));
+            }
+        });
+
+        vertx.eventBus().publish("dir", directory);
     }
 }

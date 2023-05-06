@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 public class FileSearcher {
 
-    private static Set<String> getJavaSourceFiles(String dir) {
+    public static Set<String> getJavaSourceFiles(String dir) {
         try {
             return Stream.of(Objects.requireNonNull(new File(dir).listFiles()))
                     .filter(file -> !file.isDirectory())
@@ -26,7 +26,7 @@ public class FileSearcher {
         }
     }
 
-    private static Set<File> getSubDirectory(String dir) {
+    public static Set<File> getSubDirectory(String dir) {
         try {
             return Stream.of(Objects.requireNonNull(new File(dir).listFiles()))
                     .filter(File::isDirectory)
