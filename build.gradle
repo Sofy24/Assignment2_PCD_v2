@@ -9,13 +9,17 @@ repositories {
     mavenCentral()
 }
 
+task myTask(type: JavaExec) {
+    main = 'org.example.Main'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
 tasks.withType(JavaCompile).configureEach { options.compilerArgs += ["--enable-preview"] }
-
 tasks.withType(JavaExec).configureEach { jvmArgs += ["--enable-preview"] }
 
 test {
