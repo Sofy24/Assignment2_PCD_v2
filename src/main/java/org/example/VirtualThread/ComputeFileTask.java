@@ -1,5 +1,4 @@
-package org.example.Executors;
-
+package org.example.VirtualThread;
 
 import org.example.Utilities.ComputedFile;
 import org.example.Utilities.FilePath;
@@ -9,20 +8,21 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.Callable;
 
-public class FileLengthTask extends RecursiveTask<ComputedFile> {
+public class ComputeFileTask implements Callable<ComputedFile> {
 
     private final FilePath filePath;
     private final List<LongRange> ranges;
 
-    public FileLengthTask(FilePath filePath, List<LongRange> ranges) {
+    public ComputeFileTask(FilePath filePath, List<LongRange> ranges) {
+        super();
         this.filePath = filePath;
         this.ranges = ranges;
     }
 
     @Override
-    protected ComputedFile compute() {
+    public ComputedFile call() throws Exception {
         long fileLen = 0L;
         try {
             fileLen = Files.lines(Paths.get(filePath.getCompleteFilePath()), StandardCharsets.UTF_8).count();

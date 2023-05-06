@@ -1,6 +1,6 @@
 package org.example.Utilities;
 
-import jdk.incubator.concurrent.StructuredTaskScope;
+//import jdk.incubator.concurrent.StructuredTaskScope;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class FileSearcher {
         }
     }
 
-    public static List<FilePath> getAllFilesWithPathsVT(String dir) {
+    /*public static List<FilePath> getAllFilesWithPathsVT(String dir) {
         List<FilePath> files = new ArrayList<>();
         try {
             Objects.requireNonNull(getJavaSourceFiles(dir)).forEach(file -> files.add(new FilePath(dir, file)));
@@ -70,6 +70,6 @@ public class FileSearcher {
         } catch (NullPointerException e){
             return null;
         }
-    }
+    }*/
 
 }

@@ -1,9 +1,27 @@
 package org.example.VirtualThread;
 
+import org.example.Utilities.Report;
+
+import java.util.concurrent.CompletableFuture;
+
+import static java.lang.Thread.sleep;
+
 public class Test {
 
     private final static int N_WORKERS = 12;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        String directory = args[0];
+        int longestFiles = Integer.parseInt(args[1]);
+        int numberOfRanges = Integer.parseInt(args[2]);
+        int maxLines = Integer.parseInt(args[3]);
+        CompletableFuture<Report> futureReport = new VTSourceAnalyser().getReport(directory, longestFiles, numberOfRanges, maxLines);
+        //s.getReport("C:\Users\seraf\OneDrive\Desktop\SSS\ASSIGNMENT1\f1", 5, 5, 200);
+        futureReport.thenAccept(Report::getResults);
+        System.out.println("BANANA");
+        //simulate doing other stuff
+        sleep(50000);
+
+
         /*try {
             String dir = args[0];//"C:\\Users\\seraf\\OneDrive\\Desktop\\file50"; //D
             int ranges = Integer.parseInt(args[1]); //NI

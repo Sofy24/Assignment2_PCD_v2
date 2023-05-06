@@ -64,7 +64,7 @@ public class DirectorySearchTask extends RecursiveTask<List<ComputedFile>> {
         Set<String> dirFiles = getJavaSourceFiles(directory);
         if ( dirFiles != null) {
             for (String file: dirFiles) {
-                FileLengthTask task = new FileLengthTask(new FilePath(directory, file), ranges);
+                ComputeFileTask task = new ComputeFileTask(new FilePath(directory, file), ranges);
                 fileForks.add(task);
                 task.fork();
             }
