@@ -25,14 +25,15 @@ public class Main {
         });
         var t1 = System.currentTimeMillis();
         System.out.println("Time elapsed: " + (t1 - t0));
-         try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
-        executor.submit(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
+        try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+            executor.submit(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
     }
 }
