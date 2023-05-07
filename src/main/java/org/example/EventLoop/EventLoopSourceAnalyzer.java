@@ -3,6 +3,7 @@ package org.example.EventLoop;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
+import io.vertx.core.shareddata.SharedData;
 import org.example.Utilities.*;
 
 import java.io.File;
@@ -18,8 +19,8 @@ public class EventLoopSourceAnalyzer implements SourceAnalyser {
     public Future<Report> getReport(String directory, int longestFiles, int numberOfRanges, int maxLines) {
         List<LongRange> ranges = CreateRange.generateRanges(maxLines, numberOfRanges);
         Vertx vertx = Vertx.vertx();
-        AtomicInteger totalEvents = new AtomicInteger(0);
-        AtomicInteger processedCount = new AtomicInteger(0);
+        AtomicInteger totalEvents = new AtomicInteger();
+        AtomicInteger processedCount = new AtomicInteger();
         Promise<Report> reportPromise = Promise.promise();
         List<ComputedFile> computedFiles = new ArrayList<>();
         //String directory = "C:\\Users\\seraf\\OneDrive\\Desktop\\SSS\\ASSIGNMENT1\\f1";
@@ -39,18 +40,16 @@ public class EventLoopSourceAnalyzer implements SourceAnalyser {
                 }
             }
 
-            processedCount.incrementAndGet();
+            processedCount.getAndIncrement();
             if (processedCount.get() == totalEvents.get()) {
                 reportPromise.complete(new Report(computedFiles, ranges, longestFiles));
                 vertx.close();
             }
-
         });
 
         vertx.eventBus().consumer("dir", message -> {
             // Handle the received event
             String dir = (String)message.body();
-
             Set<File> dirs = FileSearcher.getSubDirectory(dir);
             if (dirs != null && !dirs.isEmpty()) {
                 dirs.forEach(d -> {
