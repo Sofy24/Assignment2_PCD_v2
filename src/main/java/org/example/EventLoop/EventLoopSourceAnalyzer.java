@@ -1,5 +1,7 @@
 package org.example.EventLoop;
 
+import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import org.example.Utilities.*;
 
@@ -10,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class EventLoopSourceAnalyzer implements SourceAnalyser {
@@ -18,7 +20,7 @@ public class EventLoopSourceAnalyzer implements SourceAnalyser {
     public CompletableFuture<Report> getReport(String directory, int longestFiles, int numberOfRanges, int maxLines) {
         List<LongRange> ranges = CreateRange.generateRanges(maxLines, numberOfRanges);
         return CompletableFuture.supplyAsync(() ->
-                new Report(computeReport(directory, ranges), ranges, longestFiles));
+                new Report(computeReport(directory, ranges).onComplete(t -> System.out.println("RUMAO")).result(), ranges, longestFiles));
     }
 
     @Override
@@ -26,11 +28,12 @@ public class EventLoopSourceAnalyzer implements SourceAnalyser {
 
     }
 
-    private List<ComputedFile> computeReport(String directory, List<LongRange> ranges) {
+    private Future<List<ComputedFile>> computeReport(String directory, List<LongRange> ranges) {
         Vertx vertx = Vertx.vertx();
         System.out.println("START");
         AtomicInteger totalEvents = new AtomicInteger(0);
         AtomicInteger processedCount = new AtomicInteger(0);
+        Promise<List<ComputedFile>> completionPromise = Promise.promise();
         List<ComputedFile> computedFiles = new ArrayList<>();
         //String directory = "C:\\Users\\seraf\\OneDrive\\Desktop\\SSS\\ASSIGNMENT1\\f1";
 
@@ -52,6 +55,8 @@ public class EventLoopSourceAnalyzer implements SourceAnalyser {
             processedCount.incrementAndGet();
             if (processedCount.getAcquire() == totalEvents.getAcquire()) {
                 System.out.println("FINISHED");
+                completionPromise.complete(computedFiles);
+                vertx.close();
             }
 
         });
@@ -70,6 +75,7 @@ public class EventLoopSourceAnalyzer implements SourceAnalyser {
             }
 
             Set<String> files = FileSearcher.getJavaSourceFiles(dir);
+            System.out.println("FILES: " + files);
             if (files != null) {
                 files.forEach(file -> {
                     totalEvents.incrementAndGet();
@@ -81,7 +87,7 @@ public class EventLoopSourceAnalyzer implements SourceAnalyser {
 
         totalEvents.incrementAndGet();
         vertx.eventBus().publish("dir", directory);
-        return new ArrayList<ComputedFile>();
+        return completionPromise.future();
     }
 
 

@@ -16,9 +16,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 
+import static java.lang.Thread.sleep;
+
 public class Test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         CompletableFuture<Report> r = new EventLoopSourceAnalyzer().getReport("C:\\Users\\seraf\\OneDrive\\Desktop\\SSS\\ASSIGNMENT1\\f1", 5, 5, 200);
         r.join();
+        r.thenAccept(Report::getResults);
+
     }
 }
