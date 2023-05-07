@@ -1,9 +1,8 @@
 package org.example.EventLoop;
 
 
+import io.vertx.core.Future;
 import org.example.Utilities.Report;
-
-import java.util.concurrent.Future;
 
 public interface SourceAnalyser {
 

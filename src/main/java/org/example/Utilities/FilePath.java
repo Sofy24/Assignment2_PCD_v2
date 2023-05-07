@@ -10,6 +10,11 @@ public class FilePath {
         this.fileName = fileName;
     }
 
+    public FilePath(String fullPath) {
+        this.path = fullPath.substring(0, fullPath.lastIndexOf(System.getProperty("file.separator")));
+        this.fileName = fullPath.substring(fullPath.lastIndexOf(System.getProperty("file.separator")) + 1);
+    }
+
     public String getCompleteFilePath() {
         return path + System.getProperty("file.separator") + fileName;
     }
