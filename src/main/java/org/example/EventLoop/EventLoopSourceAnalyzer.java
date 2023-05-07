@@ -66,6 +66,10 @@ public class EventLoopSourceAnalyzer implements SourceAnalyser {
                 });
             }
             processedCount.incrementAndGet();
+            if (processedCount.get() == totalEvents.get()) {//only if there is an empty directory at the end
+                reportPromise.complete(new Report(computedFiles, ranges, longestFiles));
+                vertx.close();
+            }
         });
 
         totalEvents.incrementAndGet();
