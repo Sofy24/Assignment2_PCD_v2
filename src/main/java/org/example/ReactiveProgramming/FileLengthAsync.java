@@ -8,10 +8,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,25 +41,27 @@ public class FileLengthAsync {
 		}
 	}
 
+	static private void log(String msg) {
+		System.out.println("[" + Thread.currentThread().getName() + "] " + msg);
+	}
+
 	public static void main(String[] args) {
 		String directory = "C:\\Users\\seraf\\OneDrive\\Desktop\\SSS\\ASSIGNMENT1\\file50";
 		List<LongRange> ranges = CreateRange.generateRanges(200, 5);
-		getSubDirectory(directory).subscribe(
-				dirs -> {
-					Set<String> directories = new HashSet<>(dirs);
-					directories.add(directory);
-					directories.forEach(dir -> getFileLengthsAsync(dir, ranges)
-							.subscribe(
-									computedFile -> System.out.println(computedFile),
-									error -> System.err.println("Error: " + error),
-									() -> System.out.println(dir+"All files processed")
-							)
-					);
-				},
-				error -> System.err.println("Error: " + error),
-				() -> System.out.println("ALL FINISHED")
-				);
-
+		Flowable<Set<String>> subDir = getSubDirectory(directory);
+		if (subDir != null) {
+			subDir.subscribe(
+					dirs -> {
+						Set<String> directories = new HashSet<>(dirs);
+						directories.add(directory);
+						List<ComputedFile> computedFiles = new ArrayList<>();
+						directories.forEach(dir -> System.out.println("S")
+						);
+					},
+					error -> System.err.println("Error: " + error),
+					() -> System.out.println("ALL FINISHED")
+			);
+		}
 		// Keep the program alive for a while to allow asynchronous processing
 		try {
 			Thread.sleep(2000);
