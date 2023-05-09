@@ -27,7 +27,7 @@ public class Report {
         System.out.println("LONGEST FILES:");
         longestFiles.forEach(f -> System.out.println(f.getX() + " length: " + f.getY()));
         System.out.println("\n\nRANGES:");
-        filesDistribution.forEach(r -> System.out.println(r.getX() + " " + r.getY() + "%"));
+        filesDistribution.forEach(r -> System.out.println(r.getX() + " " + r.getY() * 100 + "%"));
     }
 
 }

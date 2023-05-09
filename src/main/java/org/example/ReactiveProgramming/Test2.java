@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import static java.lang.Thread.sleep;
 
@@ -30,15 +31,13 @@ public class Test2 {
         return null;
     }
 
+    public static CompletableFuture<Report> generateReport(String directory, int longestFiles, int numberOfRanges, int maxLines) {
+        List<LongRange> ranges = CreateRange.generateRanges(maxLines, numberOfRanges);
+        CompletableFuture<Report> future = new CompletableFuture<>();
 
-
-    public static void main(String[] args) throws InterruptedException {
-        String directory = "C:\\Users\\seraf\\OneDrive\\Desktop\\SSS\\ASSIGNMENT1\\file50";
-        List<LongRange> ranges = CreateRange.generateRanges(200, 5);
         Flowable<ComputedFile> computedFileFlowable = Flowable.fromCallable(() ->
                         Objects.requireNonNull(getAllSubDirectory(directory, new ArrayList<>())).stream()
                                 .map(dir -> {
-                                    System.out.println("DIR:"+dir);
                                     Set<String> files = FileSearcher.getJavaSourceFiles(dir);
                                     if (files != null) {
                                         return files.stream()
@@ -48,7 +47,6 @@ public class Test2 {
                                     return null;
                                 }).filter(Objects::nonNull)
                                 .flatMap(List::stream)
-                                .peek(file -> System.out.println(file))
                                 .toList())
                 .flatMapIterable(files -> files)
                 .map(file -> {
@@ -62,14 +60,25 @@ public class Test2 {
                     return null;
                 }).subscribeOn(Schedulers.single());
 
-        computedFileFlowable.subscribe(
-                computedFile -> System.out.println(computedFile.getFilePath()),
-                error -> System.out.println("error"),
-                () -> System.out.println("ALL FINISHED")
-        );
-        sleep(1000);
+        List<ComputedFile> computedFiles = new ArrayList<>();
 
-        System.out.println(computedFileFlowable.blockingFirst());
+        computedFileFlowable.subscribe(
+                computedFiles::add,
+                future::completeExceptionally,
+                () ->  {
+                    future.complete(new Report(computedFiles, ranges, longestFiles));
+                }
+        );
+        return future;
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        String directory = "C:\\Users\\seraf\\OneDrive\\Desktop\\SSS\\ASSIGNMENT1\\file50";
+        var future = generateReport(directory, 5, 5, 150);
+
+        future.thenAccept(Report::getResults);
+        //simulate doing other stuff
+        sleep(5000);
 
 
     }
