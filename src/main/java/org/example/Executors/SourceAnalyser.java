@@ -10,5 +10,5 @@ public interface SourceAnalyser {
 
     CompletableFuture<Report> getReport(String directory, int longestFiles, int numberOfRanges, int maxLines);
 
-    void analyzeSources(String d);
+    void analyzeSources(String directory, int longestFiles, int numberOfRanges, int maxLines);
 }

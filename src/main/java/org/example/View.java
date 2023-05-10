@@ -27,7 +27,7 @@ public class View {
         });
     }
 	
-	public void update(SourceLocMapSnapshot snapshot) {
+	public void update(SourceLocMapSnapshot snapshot) { //rescritto
 		frame.update(snapshot.getNumSrcProcessed(), snapshot.getRank());
 		distribFrame.updateDistribution(snapshot);
 	}

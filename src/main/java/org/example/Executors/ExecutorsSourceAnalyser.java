@@ -8,6 +8,7 @@ import org.example.Utilities.Report;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 
 public class ExecutorsSourceAnalyser implements SourceAnalyser{
@@ -24,6 +25,8 @@ public class ExecutorsSourceAnalyser implements SourceAnalyser{
     }
 
     @Override
-    public void analyzeSources(String d) {
+    public void analyzeSources(String directory, int longestFiles, int numberOfRanges, int maxLines) {
+
+
     }
 }

@@ -1,60 +1,30 @@
 package org.example;
 
-import io.vertx.core.Future;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
-import org.example.Executors.DirectorySearchTask;
+import org.example.Executors.ExecutorsSourceAnalyser;
 import org.example.Executors.SourceAnalyser;
-import org.example.Utilities.*;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class ControllerExecutors implements InputListener, SourceAnalyser {
+
+public class ControllerExecutors implements InputListener {
 
 	private Flag stopFlag;
 	private View view;
+	private SourceAnalyser sourceAnalyser = new ExecutorsSourceAnalyser();
 	
 	public ControllerExecutors(View view){
 		this.stopFlag = new Flag();
 		this.view = view;
 	}
 	
-	public synchronized void started(File dir, int nMaxFilesToRank, int nBands, int maxLoc){
-		stopFlag.reset();
-		
-		//var master = new Master(nMaxFilesToRank, nBands, maxLoc, dir, stopFlag, view);
-		//master.start();
+	public void started(File dir, int nMaxFilesToRank, int nBands, int maxLoc){
+		stopFlag.disable();
+		this.sourceAnalyser.analyzeSources(dir.getName(), nMaxFilesToRank, nBands, maxLoc);
 	}
 
-	public synchronized void stopped() {
-		stopFlag.set();
+	public void stopped() {
+		stopFlag.enable();
 	}
 
-	@Override
-	public CompletableFuture<Report> getReport(String directory, int longestFiles, int numberOfRanges, int maxLines) {
-		List<LongRange> ranges = CreateRange.generateRanges(maxLines, numberOfRanges);
-		try {
-			return CompletableFuture.supplyAsync(() ->
-					new Report(new ForkJoinPool().invoke(new DirectorySearchTask(directory, ranges)), ranges, longestFiles));
-
-		} catch (Exception e){
-			return null;
-		}
-	}
-
-	@Override
-	public void analyzeSources(String d) {
-
-	}
 }

@@ -35,6 +35,8 @@ public class ViewFrame extends JFrame implements ActionListener {
 	
 	private ArrayList<InputListener> listeners;
 
+	private InputListener listenerExecutors;
+
 	//TODO per ora i valori sono hardcodedati
 
 	private String defStartDir;
@@ -47,8 +49,7 @@ public class ViewFrame extends JFrame implements ActionListener {
 		super(".:: LoC Analyzer ::.");
 		setSize(800,400);
 		setLocation (100, 100);
-		listeners = new ArrayList<InputListener>();
-		
+
 		startButton = new JButton("start");
 		stopButton = new JButton("stop");
 		chooseDir = new JButton("select dir");
@@ -128,7 +129,7 @@ public class ViewFrame extends JFrame implements ActionListener {
 	
 
 	public void addListener(InputListener l){
-		listeners.add(l);
+		listenerExecutors = l;
 	}
 	
 	public void actionPerformed(ActionEvent ev){
@@ -167,24 +168,17 @@ public class ViewFrame extends JFrame implements ActionListener {
 	}
 
 	private void notifyStarted(File dir, int nMaxFilesToRank, int nBands, int maxLoc){
-		for (InputListener l: listeners){
-			l.started(dir,  nMaxFilesToRank, nBands, maxLoc);
-		}
+		listenerExecutors.started(dir,  nMaxFilesToRank, nBands, maxLoc);
 	}
 	
 	private void notifyStopped(){
-		for (InputListener l: listeners){
-			l.stopped();
-		}
+		listenerExecutors.stopped();
 	}
 	
 	public void update(long nSrcProcessed, LocEntry[] entries) {
 		SwingUtilities.invokeLater(() -> {
 			numSrcProcessed.setText("" + nSrcProcessed);
 			sourceListArea.setText("");
-			for (int i = 0; i < entries.length; i++) {
-				sourceListArea.append(entries[i].getSrcFileName() + " - " + entries[i].getNLoc() +  "\n");
-			}
 		});
 	}
 	
