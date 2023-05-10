@@ -1,9 +1,12 @@
 package org.example;
 
+import org.example.Utilities.ComputedFile;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 
 /**
@@ -49,7 +52,6 @@ public class ViewFrame extends JFrame implements ActionListener {
 		super(".:: LoC Analyzer ::.");
 		setSize(800,400);
 		setLocation (100, 100);
-
 		startButton = new JButton("start");
 		stopButton = new JButton("stop");
 		chooseDir = new JButton("select dir");
@@ -57,6 +59,7 @@ public class ViewFrame extends JFrame implements ActionListener {
 		defaultMaxFileToRank = 150;
 		defaultNumBands = 5;
 		defaultMaxLoc = 4;
+		listenerExecutors = new ControllerExecutors(new View());
 
 		selectedDirFullPath = defStartDir;
 		selectedDir = new JLabel(defStartDir);
@@ -175,10 +178,12 @@ public class ViewFrame extends JFrame implements ActionListener {
 		listenerExecutors.stopped();
 	}
 	
-	public void update(long nSrcProcessed, LocEntry[] entries) {
+	public void update(List<ComputedFile> files) {
 		SwingUtilities.invokeLater(() -> {
-			numSrcProcessed.setText("" + nSrcProcessed);
 			sourceListArea.setText("");
+			sourceListArea.append(files.toString());
+			//numSrcProcessed.setText("" + nSrcProcessed);
+			//sourceListArea.setText("");
 		});
 	}
 	

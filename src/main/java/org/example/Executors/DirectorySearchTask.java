@@ -1,6 +1,7 @@
 package org.example.Executors;
 
 
+import org.example.CurrentState;
 import org.example.Utilities.ComputedFile;
 import org.example.Utilities.FilePath;
 import org.example.Utilities.LongRange;
@@ -17,10 +18,13 @@ public class DirectorySearchTask extends RecursiveTask<List<ComputedFile>> {
     private final String directory;
     private final List<LongRange> ranges;
 
+    private CurrentState currentState; //linea aggiunta per testing GUI
+
     public DirectorySearchTask(String directory, List<LongRange> ranges) {
         super();
         this.directory = directory;
         this.ranges = ranges;
+        this.currentState = CurrentState.getInstance(); //linea aggiunta per testing GUI
     }
 
     private Set<String> getSubDirectory() {
@@ -75,6 +79,7 @@ public class DirectorySearchTask extends RecursiveTask<List<ComputedFile>> {
         }
         for (RecursiveTask<ComputedFile> task : fileForks) {
             files.add(task.join());
+            CurrentState.addFile(files.get(files.size() - 1));//linea aggiunta per testing GUI
         }
         return files;
     }

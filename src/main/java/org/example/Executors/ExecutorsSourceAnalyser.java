@@ -27,6 +27,5 @@ public class ExecutorsSourceAnalyser implements SourceAnalyser{
     @Override
     public void analyzeSources(String directory, int longestFiles, int numberOfRanges, int maxLines) {
 
-
     }
 }

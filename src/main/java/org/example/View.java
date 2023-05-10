@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.Utilities.ComputedFile;
+
+import java.util.List;
+
 /**
  * Class representing the view part of the application.
  * 
@@ -11,7 +15,7 @@ public class View {
 	private ViewFrame frame;
 	private ViewDistributionFrame distribFrame;
 	
-	public View(String defStartDir, int defMaxFileToRank, int defaultNumBands, int defaultMaxLoc){
+	public View(){
 		frame = new ViewFrame();
 		distribFrame = new ViewDistributionFrame(800,600);
 	}
@@ -27,9 +31,9 @@ public class View {
         });
     }
 	
-	public void update(SourceLocMapSnapshot snapshot) { //rescritto
-		frame.update(snapshot.getNumSrcProcessed(), snapshot.getRank());
-		distribFrame.updateDistribution(snapshot);
+	public void update(List<ComputedFile> files) { //rescritto
+		frame.update(files);
+		//distribFrame.updateDistribution(snapshot);
 	}
 	
 	public void done() {
