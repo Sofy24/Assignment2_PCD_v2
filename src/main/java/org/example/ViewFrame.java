@@ -181,11 +181,12 @@ public class ViewFrame extends JFrame implements ActionListener {
 	public void update(List<ComputedFile> files, int nMaxFilesToRank) {
 		SwingUtilities.invokeLater(() -> {
 			sourceListArea.setText("");
-			sourceListArea.append(String.valueOf(files.stream()
+			/*sourceListArea.append(String.valueOf(files.stream()
 					.sorted(Comparator.comparing(ComputedFile::getLength).reversed())
 					.limit(nMaxFilesToRank)
 					.map(f -> new Pair<>(f.getFilePath().getCompleteFilePath(), f.getLength()))
-					.toList()));
+					.toList()));*/
+			sourceListArea.append(Integer.toString(files.size()));
 		});
 	}
 	

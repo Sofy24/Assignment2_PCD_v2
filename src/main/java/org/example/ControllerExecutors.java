@@ -26,6 +26,7 @@ public class ControllerExecutors implements InputListener {
 	}
 	
 	public void started(File dir, int nMaxFilesToRank, int nBands, int maxLoc){
+		System.out.println("Restart");
 		stopFlag.disable();
 		if (!alreadyStarted) {
 			 monitor = new Monitor();
@@ -35,7 +36,6 @@ public class ControllerExecutors implements InputListener {
 		this.viewerAgent.start();
 		CompletableFuture<Void> future = this.sourceAnalyser.analyzeSources(
 			dir.getAbsolutePath(), nMaxFilesToRank, nBands, maxLoc, monitor, stopFlag);
-		future.join();
 		future.thenAccept(result -> {
 			if (stopFlag.isSet()) {
 				System.out.println("interrupted");
@@ -43,7 +43,7 @@ public class ControllerExecutors implements InputListener {
 			else {
 				alreadyStarted = false;
 				stopFlag.enable();
-				System.out.println("Completed");
+				System.out.println("true Completed");
 			}
 		});
 

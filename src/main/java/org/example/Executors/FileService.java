@@ -46,11 +46,14 @@ public class FileService extends Thread{
             monitor.addUnprocessedFiles(files);
         }
         else {
-            files = monitor.getUnprocessedFiles();
+            files = new ArrayList<>(monitor.getUnprocessedFiles());
         }
+        System.out.println("Start processing files of size" + files.size());
         if (files != null) {
-            files.forEach(file -> futureTask.add(
-                    executorService.submit(new ComputeAndStoreFileTask(file, monitor, blockFlag, ranges))));
+            files.forEach(file -> {
+                    //System.out.println("file->"+file.getCompleteFilePath());
+                futureTask.add(executorService.submit(new ComputeAndStoreFileTask(file, monitor, blockFlag, ranges)));
+            });
         }
         for (Future<?> future : futureTask ) {
             try {
