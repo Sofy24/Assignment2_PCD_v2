@@ -1,10 +1,11 @@
 package org.example;
 
 public class TestGUI {
-    public static void main(String[] args) throws InterruptedException {
-        ViewFrame frame = new ViewFrame();
-        frame.setVisible(true);
-
+    public static void main(String[] args){
+        View view = new View();
+        ControllerExecutors controller = new ControllerExecutors(view);
+        view.addListener(controller);
+        view.display();
     }
 
 }

@@ -19,7 +19,7 @@ public class ViewerAgent extends BasicAgent {
 		while (!done.isSet()) {
 			try {
 				view.update(this.monitor.getComputedFileList());
-				Thread.sleep(10);
+				Thread.sleep(30);
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}

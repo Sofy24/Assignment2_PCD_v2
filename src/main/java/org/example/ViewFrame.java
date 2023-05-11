@@ -55,11 +55,10 @@ public class ViewFrame extends JFrame implements ActionListener {
 		startButton = new JButton("start");
 		stopButton = new JButton("stop");
 		chooseDir = new JButton("select dir");
-		defStartDir = "C:\\Users\\Sofia\\Documents\\Programmazione concorrente e distribuita (Ricci)\\Assignment01\\Assignment_01_PCD";
+		defStartDir = "C:\\Users\\Sofia\\Documents\\Programmazione concorrente e distribuita (Ricci)\\Assignment01\\Assignment_01_PCD\\f1";
 		defaultMaxFileToRank = 150;
 		defaultNumBands = 5;
 		defaultMaxLoc = 4;
-		listenerExecutors = new ControllerExecutors(new View());
 
 		selectedDirFullPath = defStartDir;
 		selectedDir = new JLabel(defStartDir);
@@ -180,8 +179,9 @@ public class ViewFrame extends JFrame implements ActionListener {
 	
 	public void update(List<ComputedFile> files) {
 		SwingUtilities.invokeLater(() -> {
+			System.out.println("files = " + files);
 			sourceListArea.setText("");
-			sourceListArea.append(files.toString());
+			//sourceListArea.append(files.toString());
 			//numSrcProcessed.setText("" + nSrcProcessed);
 			//sourceListArea.setText("");
 		});
