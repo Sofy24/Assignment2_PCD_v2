@@ -10,6 +10,6 @@ public interface SourceAnalyser {
 
     CompletableFuture<Report> getReport(String directory, int longestFiles, int numberOfRanges, int maxLines);
 
-    CompletableFuture<?> analyzeSources(String directory, int longestFiles, int numberOfRanges, int maxLines,
+    CompletableFuture<Void> analyzeSources(String directory, int longestFiles, int numberOfRanges, int maxLines,
                                         Monitor monitor, Flag blockFlag);
 }

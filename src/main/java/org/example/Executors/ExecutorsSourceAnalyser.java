@@ -22,7 +22,7 @@ public class ExecutorsSourceAnalyser implements SourceAnalyser{
     }
 
     @Override
-    public CompletableFuture<?> analyzeSources(String directory, int longestFiles, int numberOfRanges, int maxLines,
+    public CompletableFuture<Void> analyzeSources(String directory, int longestFiles, int numberOfRanges, int maxLines,
                                                Monitor monitor, Flag blockFlag) {
         List<LongRange> ranges = CreateRange.generateRanges(maxLines, numberOfRanges);
         return CompletableFuture.supplyAsync(() ->  new FileService(directory, ranges, longestFiles, monitor, blockFlag).compute());

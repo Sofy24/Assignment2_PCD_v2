@@ -17,6 +17,8 @@ public class ControllerExecutors implements InputListener {
 	private boolean alreadyStarted = false;
 
 	private Monitor monitor;
+
+	private ViewerAgent viewerAgent;
 	
 	public ControllerExecutors(View view){
 		this.stopFlag = new Flag();
@@ -29,7 +31,9 @@ public class ControllerExecutors implements InputListener {
 			 monitor = new Monitor();
 			 alreadyStarted = true;
 		}
-		CompletableFuture<?> future = this.sourceAnalyser.analyzeSources(
+		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor);
+		this.viewerAgent.start();
+		CompletableFuture<Void> future = this.sourceAnalyser.analyzeSources(
 				dir.getName(), nMaxFilesToRank, nBands, maxLoc, monitor, stopFlag);
 		future.join();
 		future.thenAccept(result -> {
@@ -38,6 +42,7 @@ public class ControllerExecutors implements InputListener {
 			}
 			else {
 				alreadyStarted = false;
+				stopFlag.enable();
 				System.out.println("Completed");
 			}
 		});

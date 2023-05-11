@@ -5,6 +5,7 @@ import org.example.Utilities.ComputedFile;
 import org.example.Utilities.FilePath;
 import org.example.Utilities.FileSearcher;
 import org.example.Utilities.LongRange;
+import org.example.ViewerAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,10 @@ public class FileService extends Thread{
         this.monitor = monitor;
         this.blockFlag = blockFlag;
         executorService = Executors.newCachedThreadPool();
+
     }
 
-    public List<ComputedFile> compute() {
+    public Void compute() {
         List<FilePath> files;
         List<Future<?>> futureTask = new ArrayList<>();
         if (monitor.getUnprocessedFiles() == null) {

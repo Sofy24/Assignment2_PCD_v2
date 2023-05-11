@@ -23,4 +23,8 @@ public class Monitor {
         unprocessedFiles.remove(computedFile.getFilePath());
         computedFileList.add(computedFile);
     }
+
+    public List<ComputedFile> getComputedFileList(){
+        return this.getComputedFileList();
+    }
 }
