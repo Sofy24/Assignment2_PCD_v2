@@ -177,17 +177,17 @@ public class ViewFrame extends JFrame implements ActionListener {
 	private void notifyStopped(){
 		listenerExecutors.stopped();
 	}
-	
+
 	public void update(List<ComputedFile> files, int nMaxFilesToRank) {
+		List<String> displayFiles = files.stream()
+				.sorted(Comparator.comparing(ComputedFile::getLength).reversed())
+				.limit(nMaxFilesToRank)
+				.map(f -> f.getFilePath().getCompleteFilePath().substring(f.getFilePath().getCompleteFilePath().lastIndexOf("\\") + 1).concat(f.getLength().toString())).toList();
 		SwingUtilities.invokeLater(() -> {
 			sourceListArea.setText("");
-			/*sourceListArea.append(String.valueOf(files.stream()
-					.sorted(Comparator.comparing(ComputedFile::getLength).reversed())
-					.limit(nMaxFilesToRank)
-					.map(f -> new Pair<>(f.getFilePath().getCompleteFilePath(), f.getLength()))
-					.toList()));*/
-			sourceListArea.append(Integer.toString(files.size()));
-		});
+			for(String file : displayFiles){
+				sourceListArea.append(file + "\n");
+			}});
 	}
 	
 	public void done() {
