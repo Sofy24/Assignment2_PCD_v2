@@ -7,23 +7,26 @@ public class ViewerAgent extends BasicAgent {
 	private Flag done;
 
 	private Monitor monitor;
+
+	private int nMaxFilesToRank;
 	
-	protected ViewerAgent(View view, Flag done, Monitor monitor) {
+	protected ViewerAgent(View view, Flag done, Monitor monitor, int nMaxFilesToRank) {
 		super("viewer");
 		this.view = view;
 		this.done = done;
 		this.monitor = monitor;
+		this.nMaxFilesToRank = nMaxFilesToRank;
 	}
 
 	public void run() {
 		while (!done.isSet()) {
 			try {
-				view.update(this.monitor.getComputedFileList());
+				view.update(this.monitor.getComputedFileList(), this.nMaxFilesToRank);
 				Thread.sleep(30);
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}
 		}
-		view.update(this.monitor.getComputedFileList());
+		view.update(this.monitor.getComputedFileList(), this.nMaxFilesToRank);
 	}
 }

@@ -1,11 +1,13 @@
 package org.example;
 
 import org.example.Utilities.ComputedFile;
+import org.example.Utilities.Pair;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import javax.swing.*;
 
@@ -177,10 +179,14 @@ public class ViewFrame extends JFrame implements ActionListener {
 		listenerExecutors.stopped();
 	}
 	
-	public void update(List<ComputedFile> files) {
+	public void update(List<ComputedFile> files, int nMaxFilesToRank) {
 		SwingUtilities.invokeLater(() -> {
 			sourceListArea.setText("");
-			//sourceListArea.append(files.toString());
+			sourceListArea.append(String.valueOf(files.stream()
+					.sorted(Comparator.comparing(ComputedFile::getLength).reversed())
+					.limit(nMaxFilesToRank)
+					.map(f -> new Pair<>(f.getFilePath().getCompleteFilePath(), f.getLength()))
+					.toList()));
 			//numSrcProcessed.setText("" + nSrcProcessed);
 			//sourceListArea.setText("");
 		});

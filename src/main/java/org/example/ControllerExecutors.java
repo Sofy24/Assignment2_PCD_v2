@@ -31,7 +31,7 @@ public class ControllerExecutors implements InputListener {
 			 monitor = new Monitor();
 			 alreadyStarted = true;
 		}
-		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor);
+		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, nMaxFilesToRank);
 		this.viewerAgent.start();
 		CompletableFuture<Void> future = this.sourceAnalyser.analyzeSources(
 				dir.getAbsolutePath(), nMaxFilesToRank, nBands, maxLoc, monitor, stopFlag);

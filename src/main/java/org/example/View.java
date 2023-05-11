@@ -31,8 +31,8 @@ public class View {
         });
     }
 	
-	public void update(List<ComputedFile> files) {
-		frame.update(files);
+	public void update(List<ComputedFile> files, int nMaxFilesToRank) {
+		frame.update(files, nMaxFilesToRank);
 		//distribFrame.updateDistribution(snapshot);
 	}
 	
