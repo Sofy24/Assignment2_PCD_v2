@@ -1,10 +1,12 @@
 package org.example;
 
 import org.example.Executors.ExecutorsSourceAnalyser;
+import org.example.Executors.Monitor;
 import org.example.Executors.SourceAnalyser;
 
 import java.io.File;
-
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 
 public class ControllerExecutors implements InputListener {
@@ -20,7 +22,11 @@ public class ControllerExecutors implements InputListener {
 	
 	public void started(File dir, int nMaxFilesToRank, int nBands, int maxLoc){
 		stopFlag.disable();
-		this.sourceAnalyser.analyzeSources(dir.getName(), nMaxFilesToRank, nBands, maxLoc);
+		Monitor monitor = new Monitor();
+		CompletableFuture<?> future = this.sourceAnalyser.analyzeSources(
+				dir.getName(), nMaxFilesToRank, nBands, maxLoc, monitor, stopFlag);
+		future.join();
+		future.thenAccept(result -> System.out.println("Completed"));
 	}
 
 	public void stopped() {
