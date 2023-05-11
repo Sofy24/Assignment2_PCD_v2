@@ -31,14 +31,14 @@ public class ViewDistributionFrame extends JFrame {
 		});
     }
     
-    public void updateDistribution(SourceLocMapSnapshot sn){
+    public void updateDistribution(){
     	SwingUtilities.invokeLater(() -> {
-    		panel.updateDistribution(sn);
+    		panel.updateDistribution();
     	});
     }
         
     public static class DistributionPanel extends JPanel {
-        private volatile SourceLocMapSnapshot snapshot;
+        //private volatile SourceLocMapSnapshot snapshot;
         private int w;
         private int h;
         
@@ -51,7 +51,7 @@ public class ViewDistributionFrame extends JFrame {
         public void paint(Graphics g){
     		Graphics2D g2 = (Graphics2D) g;
 
-            final SourceLocMapSnapshot sn = snapshot;
+            /*final SourceLocMapSnapshot sn = snapshot;
             
             if (sn != null) {
                 int[] bands = sn.getBands();
@@ -112,11 +112,10 @@ public class ViewDistributionFrame extends JFrame {
     		          RenderingHints.VALUE_RENDER_QUALITY);
     		g2.clearRect(0,0,this.getWidth(),this.getHeight());
 
-    		            
+    		  */
         }
 
-        public void updateDistribution(SourceLocMapSnapshot snapshot){
-        	this.snapshot = snapshot;
+        public void updateDistribution(){
         	repaint();
         }
         

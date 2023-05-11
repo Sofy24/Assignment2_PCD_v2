@@ -179,7 +179,6 @@ public class ViewFrame extends JFrame implements ActionListener {
 	
 	public void update(List<ComputedFile> files) {
 		SwingUtilities.invokeLater(() -> {
-			System.out.println("files = " + files);
 			sourceListArea.setText("");
 			//sourceListArea.append(files.toString());
 			//numSrcProcessed.setText("" + nSrcProcessed);

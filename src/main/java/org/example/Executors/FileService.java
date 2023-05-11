@@ -41,7 +41,7 @@ public class FileService extends Thread{
     public Void compute() {
         List<FilePath> files;
         List<Future<?>> futureTask = new ArrayList<>();
-        if (monitor.getUnprocessedFiles() == null) {
+        if (monitor.getUnprocessedFiles().isEmpty()) {
             files = FileSearcher.getAllFilesWithPaths(directory);
             monitor.addUnprocessedFiles(files);
         }

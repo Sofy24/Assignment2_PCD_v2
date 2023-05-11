@@ -31,7 +31,7 @@ public class View {
         });
     }
 	
-	public void update(List<ComputedFile> files) { //rescritto
+	public void update(List<ComputedFile> files) {
 		frame.update(files);
 		//distribFrame.updateDistribution(snapshot);
 	}
