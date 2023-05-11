@@ -148,21 +148,23 @@ public class ViewFrame extends JFrame implements ActionListener {
 		        selectedDir.setText(dir.getName());
 		     }
 		} else if (src == startButton) {
+			SwingUtilities.invokeLater(() -> {
+				this.stopButton.setEnabled(true);
+				this.state.setText("Processing...");
+				filesElabPanel.setEnabled(true);
+				this.startButton.setEnabled(false);
+				chooseDir.setEnabled(false);
+					});
 			File dir = new File(selectedDirFullPath);
 			int n = Integer.parseInt(nMaxFilesToRank.getText());			
 			int nBands = Integer.parseInt(this.nBands.getText());			
 			int maxLocInBand = Integer.parseInt(this.maxLoc.getText());
 			this.notifyStarted(dir, n, nBands, maxLocInBand);
-			this.state.setText("Processing...");
-			filesElabPanel.setEnabled(true);
-			this.startButton.setEnabled(false);
-			this.stopButton.setEnabled(true);
-			chooseDir.setEnabled(false);
+
 			
 		} else if (src == stopButton) {
 			this.notifyStopped();
 			this.state.setText("Stopped.");
-
 			this.startButton.setEnabled(true);
 			this.stopButton.setEnabled(false);
 			chooseDir.setEnabled(true);
@@ -172,7 +174,7 @@ public class ViewFrame extends JFrame implements ActionListener {
 	}
 
 	private void notifyStarted(File dir, int nMaxFilesToRank, int nBands, int maxLoc){
-		listenerExecutors.started(dir,  nMaxFilesToRank, nBands, maxLoc);
+		new Thread(() -> listenerExecutors.started(dir,  nMaxFilesToRank, nBands, maxLoc)).start();
 	}
 	
 	private void notifyStopped(){
@@ -187,8 +189,6 @@ public class ViewFrame extends JFrame implements ActionListener {
 					.limit(nMaxFilesToRank)
 					.map(f -> new Pair<>(f.getFilePath().getCompleteFilePath(), f.getLength()))
 					.toList()));
-			//numSrcProcessed.setText("" + nSrcProcessed);
-			//sourceListArea.setText("");
 		});
 	}
 	
