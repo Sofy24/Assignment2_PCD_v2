@@ -34,7 +34,7 @@ public class ControllerExecutors implements InputListener {
 		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, nMaxFilesToRank);
 		this.viewerAgent.start();
 		CompletableFuture<Void> future = this.sourceAnalyser.analyzeSources(
-				dir.getAbsolutePath(), nMaxFilesToRank, nBands, maxLoc, monitor, stopFlag);
+			dir.getAbsolutePath(), nMaxFilesToRank, nBands, maxLoc, monitor, stopFlag);
 		future.join();
 		future.thenAccept(result -> {
 			if (stopFlag.isSet()) {
@@ -46,6 +46,7 @@ public class ControllerExecutors implements InputListener {
 				System.out.println("Completed");
 			}
 		});
+
 	}
 
 	public void stopped() {
