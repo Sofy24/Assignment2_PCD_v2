@@ -3,12 +3,16 @@ package org.example.Executors.GUI;
 import org.example.Executors.ExecutorsSourceAnalyser;
 import org.example.Flag;
 import org.example.InputListener;
+import org.example.Utilities.CreateRange;
+import org.example.Utilities.LongRange;
 import org.example.Utilities.Monitor;
 import org.example.Executors.SourceAnalyser;
 import org.example.View;
 import org.example.ViewerAgent;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -20,6 +24,7 @@ public class ControllerExecutors implements InputListener {
 	private boolean alreadyStarted = false;
 	private Monitor monitor;
 	private ViewerAgent viewerAgent;
+	private List<LongRange> ranges = new ArrayList<>();
 
 	public ControllerExecutors(View view){
 		this.stopFlag = new Flag();
@@ -32,10 +37,11 @@ public class ControllerExecutors implements InputListener {
 		if (!alreadyStarted) {
 			 monitor = new Monitor();
 			 alreadyStarted = true;
+			 ranges = CreateRange.generateRanges(maxLoc, nBands);
 		}
 
 		//started the View Agent
-		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, nMaxFilesToRank);
+		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, nMaxFilesToRank, ranges);
 		this.viewerAgent.start();
 
 		CompletableFuture<Void> future = this.sourceAnalyser.analyzeSources(

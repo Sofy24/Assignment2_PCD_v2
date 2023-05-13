@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.Utilities.ComputedFile;
+import org.example.Utilities.LongRange;
 
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class View {
         });
     }
 	
-	public void update(List<ComputedFile> files, int nMaxFilesToRank) {
+	public void update(List<ComputedFile> files, int nMaxFilesToRank, List<LongRange> ranges) {
 		System.out.println("updating... "+files.size());
 		frame.update(files, nMaxFilesToRank);
-		distribFrame.updateDistribution(files, nMaxFilesToRank);
+		distribFrame.updateDistribution(files, ranges);
 	}
 	
 	public void done() {

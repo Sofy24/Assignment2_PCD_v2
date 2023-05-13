@@ -1,6 +1,8 @@
 package org.example.VirtualThread.GUI;
 
 
+import org.example.Utilities.CreateRange;
+import org.example.Utilities.LongRange;
 import org.example.Utilities.Monitor;
 import org.example.Flag;
 import org.example.InputListener;
@@ -11,6 +13,7 @@ import org.example.VirtualThread.SourceAnalyser;
 import org.example.VirtualThread.VTSourceAnalyser;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -25,6 +28,7 @@ public class ControllerExecutors implements InputListener {
 	private boolean alreadyStarted = false;
 	private Monitor monitor;
 	private ViewerAgent viewerAgent;
+	private List<LongRange> ranges = new ArrayList<>();
 	
 	public ControllerExecutors(View view){
 		this.stopFlag = new Flag();
@@ -37,8 +41,9 @@ public class ControllerExecutors implements InputListener {
 		if (!alreadyStarted) {
 			 monitor = new Monitor();
 			 alreadyStarted = true;
+			ranges = CreateRange.generateRanges(maxLoc, nBands);
 		}
-		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, nMaxFilesToRank);
+		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, nMaxFilesToRank, ranges);
 		CompletableFuture<List<Future<ComputedFile>>> future = this.sourceAnalyser.analyzeSources(
 				dir.getAbsolutePath(), nMaxFilesToRank, nBands, maxLoc, monitor, stopFlag);
 		future.thenAccept(result -> {

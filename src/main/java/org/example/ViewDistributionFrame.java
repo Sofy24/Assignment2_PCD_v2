@@ -1,6 +1,8 @@
 package org.example;
 
 import org.example.Utilities.ComputedFile;
+import org.example.Utilities.LongRange;
+import org.example.Utilities.Pair;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -36,22 +38,22 @@ public class ViewDistributionFrame extends JFrame {
 		});
     }
     
-    public void updateDistribution(List<ComputedFile> files, int nMaxFilesToRank){
-    	SwingUtilities.invokeLater(() -> panel.updateDistribution(files, nMaxFilesToRank));
+    public void updateDistribution(List<ComputedFile> files, List<LongRange> ranges){
+    	SwingUtilities.invokeLater(() -> panel.updateDistribution(files, ranges));
     }
         
     public static class DistributionPanel extends JPanel {
         private int w;
         private int h;
         private List<ComputedFile> files;
-        private int nMaxFilesToRank;
+        private List<LongRange> ranges;
         
         public DistributionPanel(int w, int h){
             setSize(w,h);
             this.w = w;
             this.h = h - 150;
             this.files = new ArrayList<>();
-            this.nMaxFilesToRank = 3;
+            this.ranges = new ArrayList<>();
         }
 
         public void paint(Graphics g){
@@ -63,12 +65,14 @@ public class ViewDistributionFrame extends JFrame {
             g2.clearRect(0,0,this.getWidth(),this.getHeight());
 
             if (!files.isEmpty()) {
-                List<Integer> bands = files.stream()
-                        .sorted(Comparator.comparing(ComputedFile::getLength).reversed())
-                        .limit(nMaxFilesToRank)
-                        .map(f -> f.getLength().intValue()).toList();
-                int max = 0;
-                for (Integer band : bands) {
+                List<Long> bands = new ArrayList<>();
+                for (LongRange range : ranges) {
+                    bands.add(files.stream().filter(f -> f.getMinRange().equals(range.getMin())).count());
+
+                }
+
+                long max = 0;
+                for (Long band : bands) {
                     if (band > max) {
                         max = band;
                     }
@@ -83,7 +87,7 @@ public class ViewDistributionFrame extends JFrame {
                     Font font = new Font(null, Font.PLAIN, 8);
                     g2.setFont(font);
 
-                    for (Integer band : bands) {
+                    for (Long band : bands) {
                         int height = (int) (band * deltay);
                         g2.drawRect(x, h - height, deltax - 10, height);
                         g2.drawString("" + band, x, h - height - 10);
@@ -91,9 +95,9 @@ public class ViewDistributionFrame extends JFrame {
                     }
 
 
-                    int nLocPerBand = nMaxFilesToRank / (bands.size() - 1);
-                    int a = 0;
-                    int b = nLocPerBand;
+                    long nLocPerBand = ranges.get(ranges.size() - 1).getMin() / (bands.size() - 1);
+                    long a = 0;
+                    long b = nLocPerBand;
 
                     x = 12;
 
@@ -118,9 +122,9 @@ public class ViewDistributionFrame extends JFrame {
 
         }
 
-        public void updateDistribution(List<ComputedFile> files, int nMaxFilesToRank){
+        public void updateDistribution(List<ComputedFile> files, List<LongRange> ranges){
             this.files = files;
-            this.nMaxFilesToRank = nMaxFilesToRank;
+            this.ranges = ranges;
         	repaint();
         }
 
