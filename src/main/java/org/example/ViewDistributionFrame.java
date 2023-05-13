@@ -9,21 +9,23 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.swing.*;
 
 
 public class ViewDistributionFrame extends JFrame {
     
     private DistributionPanel panel;
+
+    //private JPanel panel;
     
     public ViewDistributionFrame(int w, int h){
         setTitle("LoC Distribution");
         setSize(w, h);
         setResizable(false);
         this.setLocation(200, 400);
+        //panel = new JPanel();
         panel = new DistributionPanel(w,h);
-        getContentPane().add(panel);
+        this.getContentPane().add(panel);
         addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent ev){
 				System.exit(-1);
@@ -49,11 +51,17 @@ public class ViewDistributionFrame extends JFrame {
             this.w = w;
             this.h = h - 150;
             this.files = new ArrayList<>();
-            this.nMaxFilesToRank = 0;
+            this.nMaxFilesToRank = 3;
         }
 
         public void paint(Graphics g){
     		Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_RENDERING,
+                    RenderingHints.VALUE_RENDER_QUALITY);
+            g2.clearRect(0,0,this.getWidth(),this.getHeight());
+
             if (!files.isEmpty()) {
                 List<Integer> bands = files.stream()
                         .sorted(Comparator.comparing(ComputedFile::getLength).reversed())
@@ -107,14 +115,6 @@ public class ViewDistributionFrame extends JFrame {
 
                 }
 	    		}
-
-
-    		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-    		          RenderingHints.VALUE_ANTIALIAS_ON);
-    		g2.setRenderingHint(RenderingHints.KEY_RENDERING,
-    		          RenderingHints.VALUE_RENDER_QUALITY);
-    		g2.clearRect(0,0,this.getWidth(),this.getHeight());
-
 
         }
 
