@@ -43,8 +43,6 @@ public class ViewFrame extends JFrame implements ActionListener {
 
 	private InputListener listenerExecutors;
 
-	//TODO per ora i valori sono hardcodedati
-
 	private String defStartDir;
 
 	private int defaultMaxFileToRank;
@@ -61,7 +59,7 @@ public class ViewFrame extends JFrame implements ActionListener {
 		defStartDir = "C:\\Users\\Sofia\\Documents\\Programmazione concorrente e distribuita (Ricci)\\Assignment01\\Assignment_01_PCD\\f1";
 		defaultMaxFileToRank = 5;
 		defaultNumBands = 5;
-		defaultMaxLoc = 4;
+		defaultMaxLoc = 200;
 
 		selectedDirFullPath = defStartDir;
 		selectedDir = new JLabel(defStartDir);
