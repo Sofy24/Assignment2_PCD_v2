@@ -1,7 +1,7 @@
 package org.example.VirtualThread.GUI;
 
 
-import org.example.Executors.Monitor;
+import org.example.Utilities.Monitor;
 import org.example.Flag;
 import org.example.Utilities.ComputedFile;
 import org.example.Utilities.FilePath;

@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.Executors.Monitor;
+import org.example.Utilities.Monitor;
 
 public class ViewerAgent extends BasicAgent {
 	private View view;
