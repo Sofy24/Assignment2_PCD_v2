@@ -124,6 +124,5 @@ public class ViewDistributionFrame extends JFrame {
         	repaint();
         }
 
-
     }
 }
