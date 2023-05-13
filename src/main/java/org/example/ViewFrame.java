@@ -12,13 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.*;
 
-/**
- * 
- * GUI component of the view.
- * 
- * @author aricci
- *
- */
 public class ViewFrame extends JFrame implements ActionListener {
 
 	private JButton startButton;
@@ -186,7 +179,10 @@ public class ViewFrame extends JFrame implements ActionListener {
 			sourceListArea.setText("");
 			for(String file : displayFiles){
 				sourceListArea.append(file + "\n");
-			}});
+			}
+			this.numSrcProcessed.setText(String.valueOf(files.size()));
+		});
+
 	}
 	
 	public void done() {
