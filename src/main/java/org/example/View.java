@@ -4,12 +4,6 @@ import org.example.Utilities.ComputedFile;
 
 import java.util.List;
 
-/**
- * Class representing the view part of the application.
- * 
- * @author aricci
- *
- */
 public class View {
 
 	private ViewFrame frame;
@@ -34,7 +28,7 @@ public class View {
 	public void update(List<ComputedFile> files, int nMaxFilesToRank) {
 		System.out.println("updating... "+files.size());
 		frame.update(files, nMaxFilesToRank);
-		//distribFrame.updateDistribution(snapshot);
+		distribFrame.updateDistribution(files, nMaxFilesToRank);
 	}
 	
 	public void done() {
