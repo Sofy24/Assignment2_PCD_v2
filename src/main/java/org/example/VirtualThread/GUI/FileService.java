@@ -2,7 +2,7 @@ package org.example.VirtualThread.GUI;
 
 
 import org.example.Utilities.Monitor;
-import org.example.Flag;
+import org.example.Utilities.GUI.Flag;
 import org.example.Utilities.ComputedFile;
 import org.example.Utilities.FilePath;
 import org.example.Utilities.FileSearcher;

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Utilities.GUI;
 
 import org.example.Utilities.LongRange;
 import org.example.Utilities.Monitor;

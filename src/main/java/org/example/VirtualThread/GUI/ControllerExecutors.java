@@ -4,11 +4,11 @@ package org.example.VirtualThread.GUI;
 import org.example.Utilities.CreateRange;
 import org.example.Utilities.LongRange;
 import org.example.Utilities.Monitor;
-import org.example.Flag;
-import org.example.InputListener;
+import org.example.Utilities.GUI.Flag;
+import org.example.Utilities.GUI.InputListener;
 import org.example.Utilities.ComputedFile;
-import org.example.View;
-import org.example.ViewerAgent;
+import org.example.Utilities.GUI.View;
+import org.example.Utilities.GUI.ViewerAgent;
 import org.example.VirtualThread.SourceAnalyser;
 import org.example.VirtualThread.VTSourceAnalyser;
 

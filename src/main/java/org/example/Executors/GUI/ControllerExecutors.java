@@ -1,14 +1,14 @@
 package org.example.Executors.GUI;
 
 import org.example.Executors.ExecutorsSourceAnalyser;
-import org.example.Flag;
-import org.example.InputListener;
+import org.example.Utilities.GUI.Flag;
+import org.example.Utilities.GUI.InputListener;
 import org.example.Utilities.CreateRange;
 import org.example.Utilities.LongRange;
 import org.example.Utilities.Monitor;
 import org.example.Executors.SourceAnalyser;
-import org.example.View;
-import org.example.ViewerAgent;
+import org.example.Utilities.GUI.View;
+import org.example.Utilities.GUI.ViewerAgent;
 
 import java.io.File;
 import java.util.ArrayList;

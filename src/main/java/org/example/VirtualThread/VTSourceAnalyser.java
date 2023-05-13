@@ -1,7 +1,7 @@
 package org.example.VirtualThread;
 
 import org.example.Utilities.Monitor;
-import org.example.Flag;
+import org.example.Utilities.GUI.Flag;
 import org.example.Utilities.ComputedFile;
 import org.example.Utilities.CreateRange;
 import org.example.Utilities.LongRange;

@@ -1,7 +1,6 @@
-package org.example;
+package org.example.Utilities.GUI;
 
 import org.example.Utilities.ComputedFile;
-import org.example.Utilities.Pair;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -9,7 +8,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.swing.*;
 
 public class ViewFrame extends JFrame implements ActionListener {

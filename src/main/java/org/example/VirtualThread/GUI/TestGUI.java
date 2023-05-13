@@ -1,6 +1,6 @@
 package org.example.VirtualThread.GUI;
 
-import org.example.View;
+import org.example.Utilities.GUI.View;
 
 public class TestGUI {
     public static void main(String[] args){

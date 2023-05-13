@@ -3,7 +3,7 @@ package org.example.Executors;
 
 import org.example.Executors.CommandLine.DirectorySearchTask;
 import org.example.Executors.GUI.FileService;
-import org.example.Flag;
+import org.example.Utilities.GUI.Flag;
 import org.example.Utilities.*;
 
 import java.util.List;

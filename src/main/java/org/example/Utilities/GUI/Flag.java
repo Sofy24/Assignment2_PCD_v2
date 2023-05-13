@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Utilities.GUI;
 
 public class Flag {
 

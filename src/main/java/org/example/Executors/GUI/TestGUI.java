@@ -1,6 +1,6 @@
-package org.example;
+package org.example.Executors.GUI;
 
-import org.example.Executors.GUI.ControllerExecutors;
+import org.example.Utilities.GUI.View;
 
 public class TestGUI {
     public static void main(String[] args){
