@@ -17,15 +17,10 @@ import java.util.concurrent.Future;
 public class FileService extends Thread{
 
     private String directory;
-
     private List<LongRange> ranges;
-
     private int longestFiles;
-
     private Monitor monitor;
-
     private Flag blockFlag;
-
     private ExecutorService executorService;
 
     public FileService(String directory, List<LongRange> ranges, int longestFiles, Monitor monitor, Flag blockFlag) {

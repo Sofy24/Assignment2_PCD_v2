@@ -36,12 +36,11 @@ public class ControllerExecutors implements InputListener {
 	}
 	
 	public void started(File dir, int nMaxFilesToRank, int nBands, int maxLoc){
-		System.out.println("Restart");
 		stopFlag.disable();
 		if (!alreadyStarted) {
 			 monitor = new Monitor();
 			 alreadyStarted = true;
-			ranges = CreateRange.generateRanges(maxLoc, nBands);
+			 ranges = CreateRange.generateRanges(maxLoc, nBands);
 		}
 		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, nMaxFilesToRank, ranges);
 		CompletableFuture<List<Future<ComputedFile>>> future = this.sourceAnalyser.analyzeSources(
