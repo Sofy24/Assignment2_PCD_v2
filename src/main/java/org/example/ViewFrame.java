@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.*;
 
 /**
@@ -58,7 +59,7 @@ public class ViewFrame extends JFrame implements ActionListener {
 		stopButton = new JButton("stop");
 		chooseDir = new JButton("select dir");
 		defStartDir = "C:\\Users\\Sofia\\Documents\\Programmazione concorrente e distribuita (Ricci)\\Assignment01\\Assignment_01_PCD\\f1";
-		defaultMaxFileToRank = 150;
+		defaultMaxFileToRank = 5;
 		defaultNumBands = 5;
 		defaultMaxLoc = 4;
 
