@@ -1,4 +1,4 @@
-package org.example.Executors;
+package org.example.Executors.CommandLine;
 
 
 import org.example.Utilities.ComputedFile;
@@ -17,7 +17,7 @@ public class DirectorySearchTask extends RecursiveTask<List<ComputedFile>> {
     private final String directory;
     private final List<LongRange> ranges;
 
-
+    //search all the sub directory in a directory
     public DirectorySearchTask(String directory, List<LongRange> ranges) {
         super();
         this.directory = directory;
@@ -53,6 +53,7 @@ public class DirectorySearchTask extends RecursiveTask<List<ComputedFile>> {
         List<ComputedFile> files = new ArrayList<>();
         List<RecursiveTask<List<ComputedFile>>> dirForks = new LinkedList<>();
         Set<String> subDirectories = getSubDirectory();
+        //create a new directory search task for each new directory found in the current directory
         if (subDirectories != null) {
             for (String subDirectory : subDirectories) {
                 DirectorySearchTask task = new DirectorySearchTask(subDirectory, ranges);
@@ -60,7 +61,7 @@ public class DirectorySearchTask extends RecursiveTask<List<ComputedFile>> {
                 task.fork();
             }
         }
-
+        //create a new task for each file found
         List<RecursiveTask<ComputedFile>> fileForks = new LinkedList<>();
         Set<String> dirFiles = getJavaSourceFiles(directory);
         if ( dirFiles != null) {
@@ -70,7 +71,7 @@ public class DirectorySearchTask extends RecursiveTask<List<ComputedFile>> {
                 task.fork();
             }
         }
-
+        //combine the result of the tasks
         for (RecursiveTask<List<ComputedFile>> task : dirForks) {
             files.addAll(task.join());
         }

@@ -1,9 +1,9 @@
 package org.example.EventLoop;
 
+
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
-import io.vertx.core.shareddata.SharedData;
 import org.example.Utilities.*;
 
 import java.io.File;
@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class EventLoopSourceAnalyzer implements SourceAnalyser {
@@ -23,7 +25,6 @@ public class EventLoopSourceAnalyzer implements SourceAnalyser {
         AtomicInteger processedCount = new AtomicInteger();
         Promise<Report> reportPromise = Promise.promise();
         List<ComputedFile> computedFiles = new ArrayList<>();
-        //String directory = "C:\\Users\\seraf\\OneDrive\\Desktop\\SSS\\ASSIGNMENT1\\f1";
 
         vertx.eventBus().consumer("file", message -> {
             // Handle the received event

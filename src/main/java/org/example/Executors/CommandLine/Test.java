@@ -1,5 +1,6 @@
-package org.example.Executors;
+package org.example.Executors.CommandLine;
 
+import org.example.Executors.ExecutorsSourceAnalyser;
 import org.example.Utilities.Report;
 
 import java.util.concurrent.CompletableFuture;
@@ -13,10 +14,10 @@ public class Test {
         int longestFiles = Integer.parseInt(args[1]);
         int numberOfRanges = Integer.parseInt(args[2]);
         int maxLines = Integer.parseInt(args[3]);
-        CompletableFuture<Report> futureReport = new ExecutorsSourceAnalyser().getReport(directory, longestFiles, numberOfRanges, maxLines);
-        //s.getReport("C:\\Users\\seraf\\OneDrive\\Desktop\\SSS\\ASSIGNMENT1\\f1 (2)\\f1", 5, 5, 200);
+        CompletableFuture<Report> futureReport = new ExecutorsSourceAnalyser()
+                .getReport(directory, longestFiles, numberOfRanges, maxLines);
         futureReport.thenAccept(Report::getResults);
-        //simulate doing other stuff
+        //simulate doing other code
         sleep(5000);
 
     }

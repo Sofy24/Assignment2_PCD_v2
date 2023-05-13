@@ -1,4 +1,4 @@
-package org.example.Executors;
+package org.example.Executors.CommandLine;
 
 
 import org.example.Utilities.ComputedFile;
@@ -23,6 +23,7 @@ public class ComputeFileTask extends RecursiveTask<ComputedFile> {
 
     @Override
     protected ComputedFile compute() {
+        //process a file into a ComputedFile
         long fileLen = 0L;
         try {
             fileLen = Files.lines(Paths.get(filePath.getCompleteFilePath()), StandardCharsets.UTF_8).count();

@@ -1,4 +1,4 @@
-package org.example.Executors;
+package org.example.Executors.GUI;
 
 import org.example.Flag;
 import org.example.Utilities.*;
@@ -37,6 +37,7 @@ public class FileService extends Thread{
     public Void compute() {
         List<FilePath> files;
         List<Future<?>> futureTask = new ArrayList<>();
+        //get all the file or if it is a restart get only the unprocessed files.
         if (monitor.getUnprocessedFiles().isEmpty()) {
             files = FileSearcher.getAllFilesWithPaths(directory);
             monitor.addUnprocessedFiles(files);
@@ -44,13 +45,12 @@ public class FileService extends Thread{
         else {
             files = new ArrayList<>(monitor.getUnprocessedFiles());
         }
-        System.out.println("Start processing files of size" + files.size());
+        //for each file submit a task
         if (files != null) {
-            files.forEach(file -> {
-                    //System.out.println("file->"+file.getCompleteFilePath());
-                futureTask.add(executorService.submit(new ComputeAndStoreFileTask(file, monitor, blockFlag, ranges)));
-            });
+            files.forEach(file -> futureTask.add(
+                    executorService.submit(new ComputeAndStoreFileTask(file, monitor, blockFlag, ranges))));
         }
+        //for every submitted task wait for it to end (completion or interruption)
         for (Future<?> future : futureTask ) {
             try {
                 future.get();
