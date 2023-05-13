@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FileLengthAsync {
+public class FileLengthAsyncNOT_RELEVANT {
 	public static Flowable<ComputedFile> getFileLengthsAsync(String directory, List<LongRange> ranges) {
 		return Flowable.fromCallable(() -> FileSearcher.getJavaSourceFiles(directory))
 				.subscribeOn(Schedulers.io())
