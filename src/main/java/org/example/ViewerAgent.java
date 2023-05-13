@@ -10,7 +10,7 @@ public class ViewerAgent extends BasicAgent {
 
 	private int nMaxFilesToRank;
 	
-	protected ViewerAgent(View view, Flag done, Monitor monitor, int nMaxFilesToRank) {
+	public ViewerAgent(View view, Flag done, Monitor monitor, int nMaxFilesToRank) {
 		super("viewer");
 		this.view = view;
 		this.done = done;

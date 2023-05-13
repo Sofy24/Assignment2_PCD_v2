@@ -25,6 +25,6 @@ public class Monitor {
     }
 
     public List<ComputedFile> getComputedFileList(){
-        return this.computedFileList;
+        return new ArrayList<>(this.computedFileList);
     }
 }

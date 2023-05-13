@@ -1,12 +1,16 @@
 package org.example.VirtualThread;
 
+import org.example.Executors.Monitor;
+import org.example.Flag;
 import org.example.Utilities.ComputedFile;
 import org.example.Utilities.CreateRange;
 import org.example.Utilities.LongRange;
 import org.example.Utilities.Report;
+import org.example.VirtualThread.GUI.FileService;
 
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 public class VTSourceAnalyser implements SourceAnalyser {
 
@@ -14,11 +18,16 @@ public class VTSourceAnalyser implements SourceAnalyser {
     public CompletableFuture<Report> getReport(String directory, int longestFiles, int numberOfRanges, int maxLines) {
         List<LongRange> ranges = CreateRange.generateRanges(maxLines, numberOfRanges);
         return CompletableFuture.supplyAsync(() ->
-                new Report(new FileService(directory, ranges).compute(), ranges, longestFiles));
+                new Report(new org.example.VirtualThread.CommandLine.FileService(
+                        directory, ranges).compute(), ranges, longestFiles));
     }
 
     @Override
-    public void analyzeSources(String d) {
+    public CompletableFuture<List<Future<ComputedFile>>> analyzeSources(
+            String directory, int longestFiles, int numberOfRanges, int maxLines, Monitor monitor, Flag blockFlag) {
+        List<LongRange> ranges = CreateRange.generateRanges(maxLines, numberOfRanges);
+        return CompletableFuture.supplyAsync(() ->  new FileService(
+                directory, ranges, longestFiles, monitor, blockFlag).compute());
 
     }
 }
