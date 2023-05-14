@@ -20,17 +20,17 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 
-public class ControllerExecutors implements InputListener {
+public class ControllerVT implements InputListener {
 
-	private Flag stopFlag;
-	private View view;
-	private SourceAnalyser sourceAnalyser = new VTSourceAnalyser();
+	private final Flag stopFlag;
+	private final View view;
+	private final SourceAnalyser sourceAnalyser = new VTSourceAnalyser();
 	private boolean alreadyStarted = false;
 	private Monitor monitor;
 	private ViewerAgent viewerAgent;
 	private List<LongRange> ranges = new ArrayList<>();
 	
-	public ControllerExecutors(View view){
+	public ControllerVT(View view){
 		this.stopFlag = new Flag();
 		this.view = view;
 	}
@@ -59,7 +59,7 @@ public class ControllerExecutors implements InputListener {
 				alreadyStarted = false;
 				stopFlag.enable();
 				view.done();
-				System.out.println("true Completed");
+				System.out.println("Completed");
 			}
 		});
 	}

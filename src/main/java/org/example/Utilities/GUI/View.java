@@ -27,7 +27,6 @@ public class View {
     }
 	
 	public void update(List<ComputedFile> files, int nMaxFilesToRank, List<LongRange> ranges) {
-		System.out.println("updating... "+files.size());
 		frame.update(files, nMaxFilesToRank);
 		distribFrame.updateDistribution(files, ranges);
 	}

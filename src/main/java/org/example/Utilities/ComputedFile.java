@@ -23,4 +23,11 @@ public class ComputedFile {
     public Long getLength() {
         return length;
     }
+
+    @Override
+    public String toString() {
+        return "ComputedFile{" +
+                "filePath=" + filePath +
+                '}';
+    }
 }

@@ -1,5 +1,7 @@
 package org.example.Utilities;
 
+import java.util.Objects;
+
 public class FilePath {
 
     private final String path;
@@ -25,5 +27,18 @@ public class FilePath {
                 "path='" + path + '\'' +
                 ", fileName='" + fileName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FilePath filePath = (FilePath) o;
+        return Objects.equals(path, filePath.path) && Objects.equals(fileName, filePath.fileName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(path, fileName);
     }
 }
