@@ -9,7 +9,7 @@ import java.util.List;
 public class Monitor {
 
     private List<FilePath> unprocessedFiles = new ArrayList<>();
-    private List<ComputedFile> computedFileList = new ArrayList<>();
+    private final List<ComputedFile> computedFileList = new ArrayList<>();
 
     public List<FilePath> getUnprocessedFiles() {
         return unprocessedFiles;
