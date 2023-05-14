@@ -26,7 +26,6 @@ public class ControllerReactive implements InputListener {
     private Monitor monitor;
     private List<LongRange> ranges = new ArrayList<>();
     private Disposable disposable = null;
-    private ViewerAgent viewerAgent;
 
 
     public ControllerReactive(View view) {
