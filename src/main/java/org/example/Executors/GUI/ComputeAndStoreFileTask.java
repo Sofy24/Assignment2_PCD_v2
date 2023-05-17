@@ -40,7 +40,7 @@ public class ComputeAndStoreFileTask implements Runnable {
         }
         for (LongRange range: ranges) {
             if (range.isInRange(fileLen)) {
-                monitor.addComputedFile(new ComputedFile(file, range.getMin(), fileLen));
+                monitor.replaceFileWithComputed(new ComputedFile(file, range.getMin(), fileLen));
             }
         }
     }

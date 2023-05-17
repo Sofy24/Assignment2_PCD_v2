@@ -49,7 +49,7 @@ public class ControllerVT implements InputListener {
 			this.viewerAgent.start();
 			result.forEach(f -> {
 				try {
-					monitor.addComputedFile(f.get());
+					monitor.replaceFileWithComputed(f.get());
 				} catch (InterruptedException | ExecutionException ignored) {}
 			});
 			if (stopFlag.isSet()) {

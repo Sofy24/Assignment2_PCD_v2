@@ -9,7 +9,6 @@ import org.example.Utilities.ComputedFile;
 import org.example.Utilities.CreateRange;
 import org.example.Utilities.GUI.InputListener;
 import org.example.Utilities.GUI.View;
-import org.example.Utilities.GUI.ViewerAgent;
 import org.example.Utilities.LongRange;
 import org.example.Utilities.Monitor;
 
@@ -44,7 +43,7 @@ public class ControllerReactive implements InputListener {
         future.thenAccept(flowable -> {
             disposable = flowable.subscribeOn(Schedulers.io()).subscribe(
                     file -> {
-                        monitor.addComputedFile(file);
+                        monitor.replaceFileWithComputed(file);
                         view.update(monitor.getComputedFileList(), maxFiles, ranges);
                     },
                     error -> {},

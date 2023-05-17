@@ -1,8 +1,5 @@
 package org.example.Utilities;
 
-import org.example.Utilities.ComputedFile;
-import org.example.Utilities.FilePath;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +16,17 @@ public class Monitor {
         unprocessedFiles = new ArrayList<>(files);
     }
 
-    public synchronized void addComputedFile(ComputedFile computedFile) {
+    public synchronized void replaceFileWithComputed(ComputedFile computedFile) {
         unprocessedFiles.remove(computedFile.getFilePath());
         computedFileList.add(computedFile);
+    }
+
+    public synchronized void addComputedFile(ComputedFile computedFile) {
+        computedFileList.add(computedFile);
+    }
+
+    public synchronized void removeAllFileComputed() {
+        unprocessedFiles.removeAll(computedFileList.stream().map(ComputedFile::getFilePath).toList());
     }
 
     public List<ComputedFile> getComputedFileList(){
