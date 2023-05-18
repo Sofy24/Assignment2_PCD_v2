@@ -27,7 +27,7 @@ public class VTSourceAnalyser implements SourceAnalyser {
             String directory, int longestFiles, int numberOfRanges, int maxLines, Monitor monitor, Flag blockFlag) {
         List<LongRange> ranges = CreateRange.generateRanges(maxLines, numberOfRanges);
         return CompletableFuture.supplyAsync(() ->  new FileService(
-                directory, ranges, longestFiles, monitor, blockFlag).compute());
+                directory, ranges, monitor, blockFlag).compute());
 
     }
 }

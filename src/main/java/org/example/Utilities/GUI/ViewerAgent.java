@@ -6,11 +6,11 @@ import org.example.Utilities.Monitor;
 import java.util.List;
 
 public class ViewerAgent extends BasicAgent {
-	private View view;
-	private Flag stopFlag;
-	private Monitor monitor;
-	private int nMaxFilesToRank;
-	private List<LongRange> ranges;
+	private final View view;
+	private final Flag stopFlag;
+	private final Monitor monitor;
+	private final int nMaxFilesToRank;
+	private final List<LongRange> ranges;
 	
 	public ViewerAgent(View view, Flag stopFlag, Monitor monitor, int nMaxFilesToRank, List<LongRange> ranges) {
 		super("viewer");

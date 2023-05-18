@@ -1,4 +1,4 @@
-package org.example.EventLoop.sera;
+package org.example.EventLoop.GUI;
 
 import io.vertx.core.Future;
 import org.example.EventLoop.EventLoopSourceAnalyzer;
@@ -23,7 +23,6 @@ public class ControllerEventLoop implements InputListener {
     private Monitor monitor;
     private List<LongRange> ranges = new ArrayList<>();
     private final SourceAnalyser sourceAnalyser = new EventLoopSourceAnalyzer();
-    private ViewerAgent viewerAgent;
 
     public ControllerEventLoop(View view) {
         this.stopFlag = new Flag();
@@ -34,19 +33,23 @@ public class ControllerEventLoop implements InputListener {
     public void started(File dir, int maxFiles, int nBands, int maxLoc) {
         stopFlag.disable();
         if (!alreadyStarted) {
+            //only the first time
             monitor = new Monitor();
             alreadyStarted = true;
             ranges = CreateRange.generateRanges(maxLoc, nBands);
         }
-        this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, maxFiles, ranges);
-        this.viewerAgent.start();
+        //for GUI update
+        ViewerAgent viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, maxFiles, ranges);
+        viewerAgent.start();
+        //start computation
         Future<Void> future = this.sourceAnalyser.analyzeSources(
                 dir.getAbsolutePath(), stopFlag, monitor, ranges);
-        System.out.println("STUFF");
+        //when completed / interrupted
         future.onComplete(f -> {
             if (stopFlag.isSet()) {
                 System.out.println("Interrupted");
             } else {
+                //reset for next directory
                 alreadyStarted = false;
                 stopFlag.enable();
                 view.done();

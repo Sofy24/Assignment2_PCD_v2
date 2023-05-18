@@ -2,21 +2,19 @@ package org.example.Utilities.GUI;
 
 import org.example.Utilities.ComputedFile;
 import org.example.Utilities.LongRange;
-import org.example.Utilities.Pair;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import javax.swing.*;
 
 
 public class ViewDistributionFrame extends JFrame {
     
-    private DistributionPanel panel;
+    private final DistributionPanel panel;
 
     //private JPanel panel;
     
@@ -43,8 +41,8 @@ public class ViewDistributionFrame extends JFrame {
     }
         
     public static class DistributionPanel extends JPanel {
-        private int w;
-        private int h;
+        private final int w;
+        private final int h;
         private List<ComputedFile> files;
         private List<LongRange> ranges;
         

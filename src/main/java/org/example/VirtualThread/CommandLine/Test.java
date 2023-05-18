@@ -14,14 +14,10 @@ public class Test {
         int numberOfRanges = Integer.parseInt(args[2]);
         int maxLines = Integer.parseInt(args[3]);
 
-        CompletableFuture<Report> futureReport = new VTSourceAnalyser().getReport(directory, longestFiles, numberOfRanges, maxLines);
-        //s.getReport("C:\Users\seraf\OneDrive\Desktop\SSS\ASSIGNMENT1\f1", 5, 5, 200);
+        CompletableFuture<Report> futureReport = new VTSourceAnalyser().getReport(
+                directory, longestFiles, numberOfRanges, maxLines);
+        futureReport.join();
         futureReport.thenAccept(Report::getResults);
-
-        //simulate doing other stuff
-        sleep(5000);
-
-
     }
 
 }

@@ -17,7 +17,7 @@ public class DirectorySearchTask extends RecursiveTask<List<ComputedFile>> {
     private final String directory;
     private final List<LongRange> ranges;
 
-    //search all the sub directory in a directory
+    //search all the subdirectory in a directory
     public DirectorySearchTask(String directory, List<LongRange> ranges) {
         super();
         this.directory = directory;

@@ -12,22 +12,19 @@ import java.util.concurrent.Future;
 
 public class FileService extends Thread{
 
-    private String directory;
+    private final String directory;
 
-    private List<LongRange> ranges;
+    private final List<LongRange> ranges;
 
-    private int longestFiles;
+    private final Monitor monitor;
 
-    private Monitor monitor;
+    private final Flag blockFlag;
 
-    private Flag blockFlag;
+    private final ExecutorService executorService;
 
-    private ExecutorService executorService;
-
-    public FileService(String directory, List<LongRange> ranges, int longestFiles, Monitor monitor, Flag blockFlag) {
+    public FileService(String directory, List<LongRange> ranges, Monitor monitor, Flag blockFlag) {
         this.directory = directory;
         this.ranges = ranges;
-        this.longestFiles = longestFiles;
         this.monitor = monitor;
         this.blockFlag = blockFlag;
         executorService = Executors.newCachedThreadPool();

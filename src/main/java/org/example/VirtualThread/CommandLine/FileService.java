@@ -17,6 +17,7 @@ public class FileService extends Thread{
     List<LongRange> ranges;
 
     public FileService(String directory, List<LongRange> ranges) {
+        //executor for Virtual Thread
         executorService = Executors.newVirtualThreadPerTaskExecutor();
         this.directory = directory;
         this.ranges = ranges;
@@ -27,10 +28,12 @@ public class FileService extends Thread{
         List<Future<ComputedFile>> futureComputedFiles = new ArrayList<>();
         List<ComputedFile> computedFiles = new ArrayList<>();
         if (files != null) {
+            //for each file sumbit a task to the VTExecutor
             for (FilePath file : files) {
                 futureComputedFiles.add(executorService.submit(new ComputeFileTask(file, ranges)));
             }
         }
+        //join all task
         for (Future<ComputedFile> futureFile : futureComputedFiles ) {
             try {
                 computedFiles.add(futureFile.get());

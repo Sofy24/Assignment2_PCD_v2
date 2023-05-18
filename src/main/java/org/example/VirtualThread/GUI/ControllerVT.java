@@ -38,20 +38,24 @@ public class ControllerVT implements InputListener {
 	public void started(File dir, int nMaxFilesToRank, int nBands, int maxLoc){
 		stopFlag.disable();
 		if (!alreadyStarted) {
+			//when first started
 			 monitor = new Monitor();
 			 alreadyStarted = true;
 			 ranges = CreateRange.generateRanges(maxLoc, nBands);
 		}
+		//GUI update
 		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, nMaxFilesToRank, ranges);
 		CompletableFuture<List<Future<ComputedFile>>> future = this.sourceAnalyser.analyzeSources(
 				dir.getAbsolutePath(), nMaxFilesToRank, nBands, maxLoc, monitor, stopFlag);
 		future.thenAccept(result -> {
 			this.viewerAgent.start();
+			//every time a task complete
 			result.forEach(f -> {
 				try {
 					monitor.replaceFileWithComputed(f.get());
 				} catch (InterruptedException | ExecutionException ignored) {}
 			});
+			//when all completed
 			if (stopFlag.isSet()) {
 				System.out.println("interrupted");
 			}

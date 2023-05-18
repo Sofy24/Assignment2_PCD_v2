@@ -2,24 +2,20 @@ package org.example.ReactiveProgramming;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import org.example.Executors.CommandLine.DirectorySearchTask;
 import org.example.Utilities.*;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.Future;
-import java.util.stream.Stream;
+
+import static org.example.Utilities.ComputeFile.computeFile;
 
 public class ReactiveProgrammingSourceAnalyser implements SourceAnalyser{
 
+    //returns all the subdir in a directory
     private List<String> getAllSubDirectory(String directory, List<String> allDirs) {
         allDirs.add(directory);
         Set<File> subDirs = FileSearcher.getSubDirectory(directory);
@@ -37,6 +33,7 @@ public class ReactiveProgrammingSourceAnalyser implements SourceAnalyser{
         List<LongRange> ranges = CreateRange.generateRanges(maxLines, numberOfRanges);
         CompletableFuture<Report> future = new CompletableFuture<>();
 
+        //flowable that starting form a directory outputs all the files inside (also the files in subdir)
         Flowable<ComputedFile> computedFileFlowable = Flowable.fromCallable(() ->
                         Objects.requireNonNull(getAllSubDirectory(directory, new ArrayList<>())).stream()
                                 .map(dir -> {
@@ -51,33 +48,27 @@ public class ReactiveProgrammingSourceAnalyser implements SourceAnalyser{
                                 .flatMap(List::stream)
                                 .toList())
                 .flatMapIterable(files -> files)
-                .map(file -> {
-                    Long fileLen = Files.lines(Paths.get(file), StandardCharsets.UTF_8).count();
-                    for (LongRange range: ranges) {
-                        if (range.isInRange(fileLen))
-                            return new ComputedFile(new FilePath(file),
-                                    range.getMin(),
-                                    fileLen);
-                    }
-                    return null;
-                }).subscribeOn(Schedulers.single());
+                .map(file -> computeFile(file, ranges)).subscribeOn(Schedulers.single());
 
         List<ComputedFile> computedFiles = new ArrayList<>();
-
+        //subscribe the flowable
         computedFileFlowable.subscribe(
                 computedFiles::add,
                 future::completeExceptionally,
+                //when flowable complete
                 () -> future.complete(new Report(computedFiles, ranges, longestFiles))
         );
         return future;
     }
 
     @Override
-    public CompletableFuture<Flowable<ComputedFile>> analyzeSources(String directory, int longestFiles, int numberOfRanges, int maxLines, Monitor monitor) {
+    public CompletableFuture<Flowable<ComputedFile>> analyzeSources(
+            String directory, int longestFiles, int numberOfRanges, int maxLines, Monitor monitor) {
         try {
             return CompletableFuture.supplyAsync(() -> {
                 List<FilePath> files;
                 List<LongRange> ranges = CreateRange.generateRanges(maxLines, numberOfRanges);
+                //file to process
                 if (monitor.getUnprocessedFiles().isEmpty()) {
                     files = FileSearcher.getAllFilesWithPaths(directory);
                     monitor.addUnprocessedFiles(files);
@@ -86,6 +77,7 @@ public class ReactiveProgrammingSourceAnalyser implements SourceAnalyser{
                     files = new ArrayList<>(monitor.getUnprocessedFiles());
                 }
                 if (files != null) {
+                    //return the flowable that produces computedFiles
                     return Flowable.fromIterable(files)
                             .map(file -> computeFile(file, ranges));
                             /*.scan(new ArrayList<>(), (list, value) -> {
@@ -102,21 +94,5 @@ public class ReactiveProgrammingSourceAnalyser implements SourceAnalyser{
             return null;
         }
     }
-
-    private ComputedFile computeFile(FilePath filePath, List<LongRange> ranges) {
-        long fileLen;
-        try (Stream<String> lines = Files.lines(Paths.get(filePath.getCompleteFilePath()), StandardCharsets.UTF_8)) {
-            fileLen = lines.count();
-        } catch (Exception e){
-            return null;
-        }
-        for (LongRange range: ranges) {
-            if (range.isInRange(fileLen)) {
-                return new ComputedFile(filePath, range.getMin(), fileLen);
-            }
-        }
-        return null;
-    }
-
 
 }

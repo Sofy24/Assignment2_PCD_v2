@@ -1,7 +1,6 @@
-package org.example.EventLoop.sera;
+package org.example.EventLoop.GUI;
 
 import org.example.Utilities.GUI.View;
-import org.example.VirtualThread.GUI.ControllerVT;
 
 public class TestGUI {
     public static void main(String[] args){

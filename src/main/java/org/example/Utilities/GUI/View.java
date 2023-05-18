@@ -7,8 +7,8 @@ import java.util.List;
 
 public class View {
 
-	private ViewFrame frame;
-	private ViewDistributionFrame distribFrame;
+	private final ViewFrame frame;
+	private final ViewDistributionFrame distribFrame;
 	
 	public View(){
 		frame = new ViewFrame();

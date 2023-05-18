@@ -12,30 +12,23 @@ import javax.swing.*;
 
 public class ViewFrame extends JFrame implements ActionListener {
 
-	private JButton startButton;
-	private JButton stopButton;
-	private JButton chooseDir;
-	
-	private JTextField nMaxFilesToRank;
-	private JTextField state;
-	private JLabel selectedDir;
-	private JTextField nBands;
-	private JTextField maxLoc;
-	
-	private JTextArea sourceListArea;
+	private final JButton startButton;
+	private final JButton stopButton;
+	private final JButton chooseDir;
+	private final JTextField nMaxFilesToRank;
+	private final JTextField state;
+	private final JLabel selectedDir;
+	private final JTextField nBands;
+	private final JTextField maxLoc;
+	private final JTextArea sourceListArea;
 	private JFileChooser startDirectoryChooser;
-	private JLabel numSrcProcessed;
-	private JPanel filesElabPanel;
-	
+	private final JLabel numSrcProcessed;
+	private final JPanel filesElabPanel;
 	private File dir;
 	private String selectedDirFullPath;
-	
 	private ArrayList<InputListener> listeners;
-
 	private InputListener listenerExecutors;
-
 	private String defStartDir;
-
 	private int defaultMaxFileToRank;
 	private int defaultNumBands;
 	private int defaultMaxLoc;

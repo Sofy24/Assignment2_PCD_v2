@@ -16,17 +16,15 @@ import java.util.concurrent.Future;
 
 public class FileService extends Thread{
 
-    private String directory;
-    private List<LongRange> ranges;
-    private int longestFiles;
-    private Monitor monitor;
-    private Flag blockFlag;
-    private ExecutorService executorService;
+    private final String directory;
+    private final List<LongRange> ranges;
+    private final Monitor monitor;
+    private final Flag blockFlag;
+    private final ExecutorService executorService;
 
-    public FileService(String directory, List<LongRange> ranges, int longestFiles, Monitor monitor, Flag blockFlag) {
+    public FileService(String directory, List<LongRange> ranges, Monitor monitor, Flag blockFlag) {
         this.directory = directory;
         this.ranges = ranges;
-        this.longestFiles = longestFiles;
         this.monitor = monitor;
         this.blockFlag = blockFlag;
         executorService = Executors.newVirtualThreadPerTaskExecutor();
@@ -35,6 +33,7 @@ public class FileService extends Thread{
     public List<Future<ComputedFile>> compute() {
         List<FilePath> files;
         List<Future<ComputedFile>> futureTasks = new ArrayList<>();
+        //handle the file to compute
         if (monitor.getUnprocessedFiles().isEmpty()) {
             files = FileSearcher.getAllFilesWithPaths(directory);
             monitor.addUnprocessedFiles(files);
@@ -42,7 +41,7 @@ public class FileService extends Thread{
         else {
             files = new ArrayList<>(monitor.getUnprocessedFiles());
         }
-        System.out.println("Start processing files");
+        //for each file create a task to compute the file
         if (files != null) {
             for (FilePath file : files) {
                 futureTasks.add(executorService.submit(new ComputeFileTask(file, blockFlag, ranges)));

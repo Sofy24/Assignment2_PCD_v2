@@ -23,7 +23,6 @@ public class ControllerExecutors implements InputListener {
 	private final SourceAnalyser sourceAnalyser = new ExecutorsSourceAnalyser();
 	private boolean alreadyStarted = false;
 	private Monitor monitor;
-	private ViewerAgent viewerAgent;
 	private List<LongRange> ranges = new ArrayList<>();
 
 	public ControllerExecutors(View view){
@@ -41,8 +40,8 @@ public class ControllerExecutors implements InputListener {
 		}
 
 		//started the View Agent
-		this.viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, nMaxFilesToRank, ranges);
-		this.viewerAgent.start();
+		ViewerAgent viewerAgent = new ViewerAgent(this.view, this.stopFlag, this.monitor, nMaxFilesToRank, ranges);
+		viewerAgent.start();
 
 		CompletableFuture<Void> future = this.sourceAnalyser.analyzeSources(
 			dir.getAbsolutePath(), nMaxFilesToRank, nBands, maxLoc, monitor, stopFlag);
