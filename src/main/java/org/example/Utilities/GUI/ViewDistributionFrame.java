@@ -15,15 +15,12 @@ import java.util.List;
 public class ViewDistributionFrame extends JFrame {
     
     private final DistributionPanel panel;
-
-    //private JPanel panel;
     
     public ViewDistributionFrame(int w, int h){
         setTitle("LoC Distribution");
         setSize(w, h);
         setResizable(false);
         this.setLocation(200, 400);
-        //panel = new JPanel();
         panel = new DistributionPanel(w,h);
         this.getContentPane().add(panel);
         addWindowListener(new WindowAdapter(){
